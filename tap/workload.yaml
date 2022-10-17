@@ -1,0 +1,15 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: POSTxnMonitor
+  labels:
+    app.kubernetes.io/part-of: tanzu-edge-pos
+    apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/has-tests: "true"
+spec:
+  source:
+    git:
+      url: https://github.com/mwright-pivotal/POSTxnMonitor.git
+      ref:
+        branch: main
+
