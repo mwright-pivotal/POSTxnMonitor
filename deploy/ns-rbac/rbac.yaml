@@ -1,0 +1,27 @@
+#@ load("@ytt:data", "data")
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: #@ data.values.serviceAccount
+  namespace: #@ data.values.namespace
+imagePullSecrets:
+  - name: #@ data.values.appPullSecret
+---
+#@ if not data.values.clusterRoleBind:
+kind: RoleBinding
+#@ else:
+kind: ClusterRoleBinding
+#@ end
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: #@ data.values.serviceAccount
+  #@ if/end not data.values.clusterRoleBind:
+  namespace: #@ data.values.namespace
+subjects:
+- kind: ServiceAccount
+  name: #@ data.values.serviceAccount
+  namespace: #@ data.values.namespace
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: #@ data.values.clusterRole

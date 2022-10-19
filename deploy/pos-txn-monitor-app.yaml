@@ -2,7 +2,9 @@ apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
 metadata:
   name: pos-txn-monitor
+  namespace: pos-edge
 spec:
+  serviceAccountName: kapp-ns-admin
   fetch:
     - git:
         url: https://github.com/mwright-pivotal/POSTxnMonitor
@@ -16,6 +18,6 @@ spec:
               #@data/values
               ---
               namespace: pos-edge
-              image: docker harbor.eqix.vmwedge.com/apps/pos-txn-monitor-dotnet-wrightmi@sha256:5c79a78bb0156525ca7d68622f6ee2762809d798ce3e27db5c016f4fc1e62269
+              image: harbor.eqix.vmwedge.com/apps/pos-txn-monitor-dotnet-wrightmi@sha256:5c79a78bb0156525ca7d68622f6ee2762809d798ce3e27db5c016f4fc1e62269
   deploy:
     - kapp: {}

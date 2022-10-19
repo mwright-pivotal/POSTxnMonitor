@@ -1,0 +1,10 @@
+#@data/values-schema
+---
+createNs: true
+namespace: pos-edge
+serviceAccount: kapp-ns-admin
+#! See `kubectl get clusterroles | grep -v system:` for a list of clusterRoles
+clusterRole: admin
+#! By default the clusterRole will be restricted to resources within the namespace
+clusterRoleBind: false
+appPullSecret: registry-credentials
