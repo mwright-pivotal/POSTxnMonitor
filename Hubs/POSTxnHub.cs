@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.SignalR;
 using RabbitMQ.Stream.Client;
 using RabbitMQ.Stream.Client.Reliable;
 using System.Buffers;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -9,6 +10,7 @@ namespace POSTxns.Hubs
 {
     public class POSTxnsHub : Hub
     {
+        private readonly IConfiguration Configuration;
         private StreamSystem? rmqSystem;
         private const string stream = "my-reliable-pos-txns";
         private readonly IHubContext<POSTxnsHub> _hubContext;
@@ -17,11 +19,15 @@ namespace POSTxns.Hubs
         {
             if (rmqSystem == null)
             {
+                var rabbitMQOptions = new RabbitMQOptions();
+                Configuration.GetSection(RabbitMQOptions.RabbitMQ).Bind(rabbitMQOptions);
+
                 var config = new StreamSystemConfig
                 {
-                    UserName = "guest",
-                    Password = "guest",
-                    VirtualHost = "/"
+                    UserName = rabbitMQOptions.Username,
+                    Password = rabbitMQOptions.Password,
+                    VirtualHost = "/",
+                    Endpoints = new List<EndPoint> {new DnsEndPoint(rabbitMQOptions.Host, rabbitMQOptions.StreamPort)}
                 };
 
                 Task<StreamSystem> tmp = StreamSystem.Create(config);
@@ -63,8 +69,9 @@ namespace POSTxns.Hubs
             await producer.Send(0, message);
         }
 
-        public POSTxnsHub()
+        public POSTxnsHub(IConfiguration configuration)
         {
+            Configuration = configuration;
             Console.WriteLine("Reliable .NET Cosumer");
             var getTask = this.GetStreamSystem();
             getTask.Wait();
