@@ -1,0 +1,21 @@
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+metadata:
+  name: spring-petclinic
+spec:
+  fetch:
+    - git:
+        url: https://github.com/mwright-pivotal/POSTxnMonitor
+        ref: origin/main
+        subPath: deploy/app-ytt
+  template:
+    - ytt:
+        inline:
+          paths:
+            values.yaml: |
+              #@data/values
+              ---
+              namespace: pos-edge
+              image: docker harbor.eqix.vmwedge.com/apps/pos-txn-monitor-dotnet-wrightmi@sha256:5c79a78bb0156525ca7d68622f6ee2762809d798ce3e27db5c016f4fc1e62269
+  deploy:
+    - kapp: {}

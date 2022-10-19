@@ -1,7 +1,7 @@
 apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
-  name: POSTxnMonitor
+  name: pos-txn-monitor-dotnet
   labels:
     app.kubernetes.io/part-of: tanzu-edge-pos
     apps.tanzu.vmware.com/workload-type: web

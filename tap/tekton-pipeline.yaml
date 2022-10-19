@@ -21,9 +21,9 @@ spec:
           - name: source-revision
         steps:
           - name: test
-            image: maven
+            image: mcr.microsoft.com/dotnet/sdk:6.0
             script: |-
               cd `mktemp -d`
               echo "retrieving: " $(params.source-url)
               curl -s $(params.source-url) | tar xvz -m
-              mvn test
+              dotnet build POSTxnMonitor.csproj
