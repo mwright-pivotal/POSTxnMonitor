@@ -1,7 +1,7 @@
 apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
 metadata:
-  name: spring-petclinic
+  name: pos-txn-monitor
 spec:
   fetch:
     - git:
