@@ -63,6 +63,12 @@ namespace POSTxns.Hubs
             await producer.Send(0, message);
         }
 
+        public async Task SendMessage(string publishingId, string jsonString)
+        {
+            POSTxn txnInfo = JsonSerializer.Deserialize<POSTxn>(jsonString)!;
+            Console.WriteLine(jsonString);
+            await Clients.All.SendAsync("ReceiveTxn", txnInfo.storeId, txnInfo.registerId, txnInfo.total);
+        }
         public POSTxnsHub()
         {
             Console.WriteLine("Reliable .NET Cosumer");
@@ -79,10 +85,8 @@ namespace POSTxns.Hubs
                 {
                     Console.WriteLine("Message Received");
                     string jsonString = Encoding.Default.GetString(message.Data.Contents.ToArray());
-                    Console.WriteLine(jsonString);
-                    POSTxn txnInfo = JsonSerializer.Deserialize<POSTxn>(jsonString)!;
                     
-                    await this._hubContext.Clients.All.SendAsync("ReceiveTxn", txnInfo.storeId, txnInfo.registerId, txnInfo.total);
+                    await this.SendMessage("",jsonString);
                     await Task.CompletedTask;
                 }
             });

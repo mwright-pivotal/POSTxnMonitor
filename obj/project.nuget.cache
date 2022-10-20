@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "QMqVN5qtX0CEX8PeZ0C6r5m8uhsRGCBox08ucJ3Yele97b0EuL7Hvha/U5ZSMDP8oNBlKHzHMbr+MUaa2i7Qow==",
+  "dgSpecHash": "gWoMUUe2Qh648CMNeNecMCdean4qXvI0sJaicRtZcTQ8Lx6A5uAbJsz5BA6tf0Nt0jsrl6qNaeuMyRVzlqLPbQ==",
   "success": true,
-  "projectFilePath": "/Users/wrightmi/Documents/Tanzu/Projects/POSTxnMonitor/POSTxnMonitor.csproj",
+  "projectFilePath": "/Users/michaelwright/Documents/VMware/Projects/POSTxnMonitor/POSTxnMonitor.csproj",
   "expectedPackageFiles": [
-    "/Users/wrightmi/.nuget/packages/rabbitmq.stream.client/1.0.0-rc.5/rabbitmq.stream.client.1.0.0-rc.5.nupkg.sha512",
-    "/Users/wrightmi/.nuget/packages/system.io.pipelines/6.0.2/system.io.pipelines.6.0.2.nupkg.sha512"
+    "/Users/michaelwright/.nuget/packages/rabbitmq.stream.client/1.0.0-rc.5/rabbitmq.stream.client.1.0.0-rc.5.nupkg.sha512",
+    "/Users/michaelwright/.nuget/packages/system.io.pipelines/6.0.2/system.io.pipelines.6.0.2.nupkg.sha512"
   ],
   "logs": []
 }

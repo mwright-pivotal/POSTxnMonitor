@@ -84,19 +84,23 @@
     ]
   },
   "packageFolders": {
-    "/Users/wrightmi/.nuget/packages/": {}
+    "/Users/michaelwright/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/wrightmi/Documents/Tanzu/Projects/POSTxnMonitor/POSTxnMonitor.csproj",
+      "projectUniqueName": "/Users/michaelwright/Documents/VMware/Projects/POSTxnMonitor/POSTxnMonitor.csproj",
       "projectName": "POSTxnMonitor",
-      "projectPath": "/Users/wrightmi/Documents/Tanzu/Projects/POSTxnMonitor/POSTxnMonitor.csproj",
-      "packagesPath": "/Users/wrightmi/.nuget/packages/",
-      "outputPath": "/Users/wrightmi/Documents/Tanzu/Projects/POSTxnMonitor/obj/",
+      "projectPath": "/Users/michaelwright/Documents/VMware/Projects/POSTxnMonitor/POSTxnMonitor.csproj",
+      "packagesPath": "/Users/michaelwright/.nuget/packages/",
+      "outputPath": "/Users/michaelwright/Documents/VMware/Projects/POSTxnMonitor/obj/",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "/Users/wrightmi/.nuget/NuGet/NuGet.Config"
+        "/Users/michaelwright/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
