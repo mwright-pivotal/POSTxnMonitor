@@ -4,11 +4,13 @@ using RabbitMQ.Stream.Client.Reliable;
 using System.Buffers;
 using System.Text;
 using System.Text.Json;
+using System.Net;
 
 namespace POSTxns.Hubs
 {
     public class POSTxnsHub : Hub
     {
+        private readonly IConfiguration Configuration;
         private StreamSystem? rmqSystem;
         private const string stream = "my-reliable-pos-txns";
         private readonly IHubContext<POSTxnsHub> _hubContext;
@@ -17,11 +19,20 @@ namespace POSTxns.Hubs
         {
             if (rmqSystem == null)
             {
+                var rabbitMQOptions = new RabbitMQOptions();
+                Configuration.GetSection(RabbitMQOptions.RabbitMQ).Bind(rabbitMQOptions);
+                // var config = new StreamSystemConfig
+                // {
+                //     UserName = "guest",
+                //     Password = "guest",
+                //     VirtualHost = "/"
+                // };
                 var config = new StreamSystemConfig
                 {
-                    UserName = "guest",
-                    Password = "guest",
-                    VirtualHost = "/"
+                    UserName = rabbitMQOptions.Username,
+                    Password = rabbitMQOptions.Password,
+                    VirtualHost = "/",
+                    Endpoints = new List<EndPoint> {new DnsEndPoint(rabbitMQOptions.Host, rabbitMQOptions.StreamPort)}
                 };
 
                 Task<StreamSystem> tmp = StreamSystem.Create(config);
