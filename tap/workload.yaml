@@ -7,9 +7,16 @@ metadata:
     apps.tanzu.vmware.com/workload-type: web
     apps.tanzu.vmware.com/has-tests: "true"
 spec:
+  params:
+    - name: gitops_server_address
+      value: ssh://git@github.com
+    - name: gitops_repository_owner
+      value: mwright-pivotal
+    - name: gitops_repository_name
+      value: POSTxnMonitor-ops
   source:
     git:
-      url: https://github.com/mwright-pivotal/POSTxnMonitor.git
+      url: ssh://git@github.com/mwright-pivotal/POSTxnMonitor
       ref:
         branch: main
 
