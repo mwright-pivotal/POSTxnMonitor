@@ -1,0 +1,87 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: edge-pos-messaging
+spec:
+  replicas: 1
+  service:
+    type: LoadBalancer
+  rabbitmq:
+    additionalPlugins:
+      - rabbitmq_federation
+      - rabbitmq_federation_management
+      - rabbitmq_management
+      - rabbitmq_prometheus
+      - rabbitmq_stream
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: User
+metadata:
+  name: pos-system
+  namespace: edge-data-services
+spec:
+  tags:
+  - administrator
+  rabbitmqClusterReference:
+    name: edge-pos-messaging
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Vhost
+metadata:
+  name: in-store-vhost
+spec:
+  name: in-store-vhost # vhost name
+  rabbitmqClusterReference:
+    name: edge-pos-messaging # rabbitmqCluster must exist in the same namespace as this resource
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: pos-exchange
+spec:
+  name: pos-exchange # name of the exchange
+  type: direct # default to 'direct' if not provided; can be set to 'direct', 'fanout', 'headers', and 'topic'
+  autoDelete: false
+  durable: true
+  vhost: in-store-vhost # default to '/' if not provided
+  rabbitmqClusterReference:
+    name: edge-pos-messaging 
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: binding
+spec:
+  vhost: in-store-vhost # default to '/' if not provided
+  source: pos-exchange # an existing exchange
+  destination: pos-txns # an existing queue or exchange
+  destinationType: queue # can be 'queue' or 'exchange'
+  rabbitmqClusterReference:
+    name: edge-pos-messaging # rabbitmqCluster must exist in the same namespace as this resource
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: pos-txns
+spec:
+  name: pos-txns # name of the queue
+  vhost: in-store-vhost # default to '/' if not provided
+  autoDelete: false
+  durable: true # seting 'durable' to false means this queue won't survive a server restart
+  rabbitmqClusterReference:
+    name: edge-pos-messaging # rabbitmqCluster must exist in the same namespace as this resource
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Permission
+metadata:
+  name: pos-permission
+spec:
+  vhost: in-store-vhost
+  userReference:
+    name: "pos-system"
+  permissions:
+    write: ".*"
+    configure: ""
+    read: ".*"
+  rabbitmqClusterReference:
+    name: edge-pos-messaging
