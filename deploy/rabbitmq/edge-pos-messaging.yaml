@@ -18,7 +18,6 @@ apiVersion: rabbitmq.com/v1beta1
 kind: User
 metadata:
   name: pos-system
-  namespace: edge-data-services
 spec:
   tags:
   - administrator
