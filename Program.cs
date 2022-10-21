@@ -1,11 +1,15 @@
 using POSTxns.Hubs;
-using RabbitMQ.Stream.Client;
-using RabbitMQ.Stream.Client.Reliable;
+using POSTxns.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
+builder.Services.Configure<RabbitMQOptions>(
+    builder.Configuration.GetSection(RabbitMQOptions.RabbitMQ));
+
+builder.Services.AddScoped<IRabbitMQService, RabbitMQService>();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -24,5 +28,5 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapHub<POSTxnsHub>("/posHub");
-
+app.MapControllers();
 app.Run();
