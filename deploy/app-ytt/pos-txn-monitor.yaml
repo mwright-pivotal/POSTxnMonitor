@@ -59,4 +59,5 @@ spec:
   ports:
   - port: #@ data.values.svc_port
     targetPort: http
+  type: LoadBalancer
   selector: #@ labels()
