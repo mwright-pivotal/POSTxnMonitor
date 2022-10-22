@@ -2,5 +2,5 @@
 ---
 svc_port: 80
 app_port: 8080
-namespace: pos
-image: harbor.eqix.vmwedge.com/apps/pos-txn-monitor-dotnet-wrightmi@sha256:5c79a78bb0156525ca7d68622f6ee2762809d798ce3e27db5c016f4fc1e62269
+namespace: pos-edge
+image: harbor.eqix.vmwedge.com/apps/pos-txn-monitor-dotnet-wrightmi@sha256:d8e574aba69496758ba0f0b42b151759414c84f54e7f4cb8f47adc95b99ef98b
