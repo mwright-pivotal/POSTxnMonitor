@@ -23,6 +23,31 @@ spec:
         ports:
         - name: http
           containerPort: #@ data.values.app_port
+        env:
+        - name: RabbitMQ__Host
+          valueFrom:
+            secretKeyRef:
+              name: edge-pos-messaging-default-user
+              key: host
+              optional: false
+        - name: RabbitMQ__StreamPort
+          valueFrom:
+            secretKeyRef:
+              name: edge-pos-messaging-default-user
+              key: stream-port
+              optional: false
+        - name: RabbitMQ__Username
+          valueFrom:
+            secretKeyRef:
+              name: edge-pos-messaging-default-user
+              key: username
+              optional: false
+        - name: RabbitMQ__Password
+          valueFrom:
+            secretKeyRef:
+              name: edge-pos-messaging-default-user
+              key: password
+              optional: false
 ---
 apiVersion: v1
 kind: Service

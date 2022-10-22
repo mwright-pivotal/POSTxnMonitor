@@ -1,0 +1,14 @@
+# for more information, see: https://www.rabbitmq.com/shovel-dynamic.html
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Shovel
+metadata:
+  name: edge-dc-shovel
+spec:
+  name: "edge-dc-shovel"
+  uriSecret:
+    name: shovel-secret
+  srcQueue: "source-queue"
+  destQueue: "destination-queue"
+  rabbitmqClusterReference:
+    name: edge-pos-messaging
