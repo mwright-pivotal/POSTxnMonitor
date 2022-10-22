@@ -1,4 +1,5 @@
 # for more information, see: https://www.rabbitmq.com/shovel-dynamic.html
+# Want equivalent to rabbitmqctl set_parameter shovel my-shovel   '{"src-protocol": "amqp091", "src-uri": "amqp://", "src-queue": "my-reliable-pos-txns", "dest-protocol": "amqp091", "dest-uri": "amqp://dc_user:dc_passwd@172.16.100.74", "dest-queue": "my-reliable-pos-txns"}'
 ---
 apiVersion: rabbitmq.com/v1beta1
 kind: Shovel
@@ -8,7 +9,7 @@ spec:
   name: "edge-dc-shovel"
   uriSecret:
     name: shovel-secret
-  srcQueue: "source-queue"
-  destQueue: "destination-queue"
+  srcQueue: "my-reliable-pos-txns"
+  destQueue: "my-reliable-pos-txns"
   rabbitmqClusterReference:
     name: edge-pos-messaging
