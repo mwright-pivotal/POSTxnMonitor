@@ -1,4 +1,5 @@
 using RabbitMQ.Stream.Client;
+using POSTxns.Hubs;
 
 namespace POSTxns.Service
 {
@@ -7,5 +8,6 @@ namespace POSTxns.Service
         public RabbitMQOptions getRabbitConfig();
         public void createConsumer();
         public Task<Producer> getProducer();
+        public void setHub(POSTxnsHub hub);
     }
 }

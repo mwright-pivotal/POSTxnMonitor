@@ -15,13 +15,13 @@ namespace POSTxns.Service
 
         private readonly RabbitMQOptions rmqOptions;
 
-        public IHubContext<POSTxnsHub, IPOSTxnHubClient> _strongPOSTxnsHubContext { get; }
+        //public IHubContext<POSTxnsHub, IPOSTxnHubClient> _strongPOSTxnsHubContext { get; }
+        private POSTxnsHub _hub; 
 
-        public RabbitMQService(IOptions<RabbitMQOptions> opts, IHubContext<POSTxnsHub, IPOSTxnHubClient> clientHubContext) {
-            rmqOptions = opts.Value;
-            _strongPOSTxnsHubContext = clientHubContext;
+        public RabbitMQService(IOptions<RabbitMQOptions> options) {
+            rmqOptions = options.Value;
+            //_hub = clientHubContext;
         }
-
         public RabbitMQOptions getRabbitConfig() {
             return rmqOptions;
         } 
@@ -36,19 +36,30 @@ namespace POSTxns.Service
                     Reference = Guid.NewGuid().ToString(),
                     Stream = this.getRabbitConfig().StreamName,
                     StreamSystem = localStreamSystem,
-                    OffsetSpec = new OffsetTypeFirst(),
+                    OffsetSpec = new OffsetTypeLast(),
                     ClientProvidedName = "My-Reliable-Consumer",
                     MessageHandler = async (_, _, message) =>
                     {
                         Console.WriteLine("Message Received");
                         string jsonString = Encoding.Default.GetString(message.Data.Contents.ToArray());
-                        Console.WriteLine(jsonString);
+                        Console.WriteLine("Payload="+jsonString);
                         
-                        POSTxn? txn = JsonSerializer.Deserialize<POSTxn>(jsonString);
-                        await _strongPOSTxnsHubContext.Clients.All.SendTxn(txn.storeId,txn.registerId,txn.total.Value);
+                        var jsonDocument = JsonDocument.Parse(message.Data.Contents);
+                        var rootElement = jsonDocument.RootElement;
+
+                        //await _strongPOSTxnsHubContext.Clients.All.ReceiveTxn(txn.storeId,txn.registerId,txn.total.Value);
+                        Console.WriteLine("Updating Hub clients....");
+                        var jStoreId=rootElement.GetProperty("storeId").GetString();
+                        var jRegisterId=rootElement.GetProperty("registerId").GetString();
+                        var jTotal=rootElement.GetProperty("total").GetDecimal();
+                        await _hub.Clients.All.SendAsync("ReceiveTxn",jStoreId,jRegisterId,jTotal);
                         await Task.CompletedTask;
                     }
                 });
+        }
+
+        public void setHub(POSTxnsHub hub) {
+            this._hub = hub;
         }
 
         public async Task<StreamSystem> getStreamSystem() {

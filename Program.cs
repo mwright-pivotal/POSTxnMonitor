@@ -8,7 +8,8 @@ builder.Services.AddSignalR();
 builder.Services.Configure<RabbitMQOptions>(
     builder.Configuration.GetSection(RabbitMQOptions.RabbitMQ));
 
-builder.Services.AddScoped<IRabbitMQService, RabbitMQService>();
+builder.Services.AddSingleton<POSTxnsHub>();
+builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

@@ -1,6 +1,6 @@
 "use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/posHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/posHub").configureLogging(signalR.LogLevel.Debug).build();
 
 //Disable the send button until connection is established.
 document.getElementById("testButton").disabled = true;
