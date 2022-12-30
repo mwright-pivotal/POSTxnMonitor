@@ -18,8 +18,10 @@ namespace POSTxns.Hubs
         }
         public async Task SendTxn(string storeId, string registerId, decimal total)
         {
+            string value = Environment.MachineName;
+            Console.WriteLine($"   {value}: {(value != null ? "found" : "not found")}");
 
-            string jsonString = JsonSerializer.Serialize(new POSTxn(storeId,registerId,total));
+            string jsonString = JsonSerializer.Serialize(new POSTxn(value,registerId,total));
             var message = new Message(Encoding.UTF8.GetBytes(jsonString));
 
             var producer = await rabbitMQService.getProducer();
