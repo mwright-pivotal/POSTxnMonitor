@@ -4,3 +4,4 @@ svc_port: 80
 app_port: 8080
 namespace: pos-edge
 image: harbor.eqix.vmwedge.com/apps/pos-txn-monitor-dotnet-wrightmi@latest
+storeId: 2300HolcombBridge

@@ -6,9 +6,12 @@ namespace POSTxns.Hubs
         public String? registerId { get; set; }
         public Decimal? total { get; set; }
 
-        public POSTxn(String _storeId, String _registerId, Decimal _total) {
+        public String? itemId { get; set; }
+
+        public POSTxn(String _storeId, String _registerId, String _itemId, Decimal _total) {
             this.storeId=_storeId;
             this.registerId=_registerId;
+            this.itemId = _itemId;
             this.total=_total;
         }
     }

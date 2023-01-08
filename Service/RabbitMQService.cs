@@ -15,11 +15,14 @@ namespace POSTxns.Service
 
         private readonly RabbitMQOptions rmqOptions;
 
+        private readonly POSTxnMonitorOptions appOptions;
+
         //public IHubContext<POSTxnsHub, IPOSTxnHubClient> _strongPOSTxnsHubContext { get; }
         private POSTxnsHub _hub; 
 
-        public RabbitMQService(IOptions<RabbitMQOptions> options) {
-            rmqOptions = options.Value;
+        public RabbitMQService(IOptions<RabbitMQOptions> rOptions, IOptions<POSTxnMonitorOptions> posAppOptions) {
+            rmqOptions = rOptions.Value;
+            appOptions = posAppOptions.Value;
             //_hub = clientHubContext;
         }
         public RabbitMQOptions getRabbitConfig() {
@@ -49,10 +52,11 @@ namespace POSTxns.Service
 
                         //await _strongPOSTxnsHubContext.Clients.All.ReceiveTxn(txn.storeId,txn.registerId,txn.total.Value);
                         Console.WriteLine("Updating Hub clients....");
-                        var jStoreId=rootElement.GetProperty("storeId").GetString();
+                        //var jStoreId=rootElement.GetProperty("storeId").GetString();
+                        var jItemId=rootElement.GetProperty("itemId").GetString();
                         var jRegisterId=rootElement.GetProperty("registerId").GetString();
                         var jTotal=rootElement.GetProperty("total").GetDecimal();
-                        await _hub.Clients.All.SendAsync("ReceiveTxn",jStoreId,jRegisterId,jTotal);
+                        await _hub.Clients.All.SendAsync("ReceiveTxn",appOptions.StoreId,jRegisterId,jItemId,jTotal);
                         await Task.CompletedTask;
                     }
                 });
