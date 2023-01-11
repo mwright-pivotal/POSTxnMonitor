@@ -13,6 +13,8 @@ spec:
       - rabbitmq_management
       - rabbitmq_prometheus
       - rabbitmq_stream
+  persistence:
+    storageClassName: local-path
 ---
 apiVersion: rabbitmq.com/v1beta1
 kind: User
