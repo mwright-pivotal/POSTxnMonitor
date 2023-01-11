@@ -5,7 +5,7 @@ metadata:
 spec:
   replicas: 1
   service:
-    type: LoadBalancer
+    type: NodePort
   rabbitmq:
     additionalPlugins:
       - rabbitmq_federation
