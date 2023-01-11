@@ -41,7 +41,7 @@ spec:
     - name: RabbitMQ__Password
       valueFrom:
         secretKeyRef:
-          name: edge-pos-messaging-default-user
+          name: edge-pos-messaging-rabbitmq
           key: password
           optional: false
     - name: POSTxnMonitor__StoreId

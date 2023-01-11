@@ -1,0 +1,38 @@
+#cloud-config
+write_files:
+- content: |
+    #!/bin/bash
+    
+    ulimit 65536
+
+    export KUBECONFIG=/etc/kubernetes/admin.conf
+    export INSTALL_BUNDLE=registry.tanzu.vmware.com/tanzu-cluster-essentials/cluster-essentials-bundle@sha256:54bf611711923dccd7c7f10603c846782b90644d48f1cb570b43a082d18e23b9
+    export INSTALL_REGISTRY_HOSTNAME=$$APP_REGISTRY_URL$$
+    export INSTALL_REGISTRY_USERNAME=$$APP_REGISTRY_USERNAME$$
+    export INSTALL_REGISTRY_PASSWORD=$$APP_REGISTRY_PASSWORD$$
+
+    cd /root
+    # ./install.sh --yes
+    export TMC_API_TOKEN=$$TMC_KEY$$
+    tmc login --name $HOSTNAME --no-configure
+    tmc cluster attach -n $HOSTNAME -g device-edge -p default -v 4 -k /etc/kubernetes/admin.conf
+    tmc cluster fluxcd continuousdelivery enable --cluster-name $HOSTNAME
+    
+    echo "Wait for Continuous Delivery feature to be enabled in cluster...."
+    kubectl wait -n tanzu-fluxcd-packageinstalls packageinstall kustomize-controller --for condition=ReconcileSucceeded=True --timeout=90s
+    tmc cluster fluxcd gitrepository create --url="https://github.com/mwright-pivotal/POSTxnMonitor-ops" --cluster-name $HOSTNAME -n postxnmonitor-ops-repo --branch main   
+    kubectl create secret docker-registry app-registry --docker-username $$APP_REGISTRY_USERNAME$$ --docker-password $$APP_REGISTRY_PASSWORD$$ --docker-server $$APP_REGISTRY_URL$$
+    kubectl create configmap store-config --from-literal=POSTxnMonitor__StoreId=$$RETAIL_STORE_LOC_ID$$
+    tmc cluster fluxcd kustomization create -n postxnmonitor-gitops --source-name postxnmonitor-ops-repo --path config/default/pos-txn-monitor-dotnet --cluster-name $HOSTNAME  --target-namespace default
+
+    echo "Deploy Rabbitmq Operator"
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm install rmq-operator-release bitnami/rabbitmq-cluster-operator
+  path: /tmp/setup.sh
+bootcmd:
+ - printf "fix\n" | parted ---pretend-input-tty /dev/vda print
+ - printf "Yes\n21.5GB\n" | parted ---pretend-input-tty /dev/vda resizepart 3
+ - resize2fs /dev/vda3
+runcmd:
+ - [ tinykube, start ]
+ - [ sh, /tmp/setup.sh ]
