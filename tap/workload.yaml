@@ -19,4 +19,33 @@ spec:
       url: ssh://git@github.com/mwright-pivotal/POSTxnMonitor
       ref:
         branch: main
-
+  env:
+    - name: RabbitMQ__Host
+      valueFrom:
+        secretKeyRef:
+          name: edge-pos-messaging-default-user
+          key: host
+          optional: false
+    - name: RabbitMQ__StreamPort
+      valueFrom:
+        secretKeyRef:
+          name: edge-pos-messaging-default-user
+          key: stream-port
+          optional: false
+    - name: RabbitMQ__Username
+      valueFrom:
+        secretKeyRef:
+          name: edge-pos-messaging-default-user
+          key: username
+          optional: false
+    - name: RabbitMQ__Password
+      valueFrom:
+        secretKeyRef:
+          name: edge-pos-messaging-default-user
+          key: password
+          optional: false
+    - name: POSTxnMonitor__StoreId
+      valueFrom:
+        configMapKeyRef:
+          name: store-config
+          key: POSTxnMonitor__StoreId
