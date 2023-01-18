@@ -52,11 +52,11 @@ namespace POSTxns.Service
 
                         //await _strongPOSTxnsHubContext.Clients.All.ReceiveTxn(txn.storeId,txn.registerId,txn.total.Value);
                         Console.WriteLine("Updating Hub clients....");
-                        //var jStoreId=rootElement.GetProperty("storeId").GetString();
+                        var jStoreId=rootElement.GetProperty("storeId").GetString();
                         var jItemId=rootElement.GetProperty("itemId").GetString();
                         var jRegisterId=rootElement.GetProperty("registerId").GetString();
                         var jTotal=rootElement.GetProperty("total").GetDecimal();
-                        await _hub.Clients.All.SendAsync("ReceiveTxn",appOptions.StoreId,jRegisterId,jItemId,jTotal);
+                        await _hub.Clients.All.SendAsync("ReceiveTxn",jStoreId,jRegisterId,jItemId,jTotal);
                         await Task.CompletedTask;
                     }
                 });
