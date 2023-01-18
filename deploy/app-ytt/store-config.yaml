@@ -1,7 +1,9 @@
+#@ load("@ytt:data", "data")
+
 apiVersion: v1
 data:
   POSTxnMonitor__StoreId: #@ data.values.storeId
 kind: ConfigMap
 metadata:
   name: store-config
-  namespace: default
+  namespace: #@ data.values.namespace

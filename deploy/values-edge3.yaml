@@ -1,0 +1,7 @@
+#@data/values-schema
+---
+svc_port: 80
+app_port: 8080
+namespace: pos-edge
+image: harbor.services.edge.wrightcode.io:9443/apps/pos-txn-monitor-dotnet-default@sha256:c503e995a06866c024cafe8d1c8356a22c4f00cd6d0e74bd5c6998869cb55328
+storeId: 1029OldAlabamaRd
