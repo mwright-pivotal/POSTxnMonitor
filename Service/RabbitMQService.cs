@@ -82,7 +82,7 @@ namespace POSTxns.Service
                     VirtualHost = "/",
                     Endpoints = new List<EndPoint> {new DnsEndPoint(rmqOptions.Host, rmqOptions.StreamPort)}
                 };
-
+                Console.WriteLine("Using host="+rmqOptions.Host);
                 Task<StreamSystem> tmp = StreamSystem.Create(config);
                 tmp.Wait();
                 streamSystem = tmp.Result;

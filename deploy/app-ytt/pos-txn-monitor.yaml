@@ -48,6 +48,8 @@ spec:
               name: edge-pos-messaging-default-user
               key: password
               optional: false
+        - name: POSTxnMonitor__StoreId
+          value: #@ data.values.storeId
 ---
 apiVersion: v1
 kind: Service
