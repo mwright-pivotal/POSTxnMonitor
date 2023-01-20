@@ -5,8 +5,8 @@ metadata:
   description: Tanzu Edge Point of Sale Transaction Monitor
   tags:
     - app-accelerator
-    - java
-    - spring
+    - rabbitmq
+    - dotnet
     - tanzu
     - edge
   annotations:

@@ -1,0 +1,8 @@
+accelerator:
+  displayName: Edge Optimized DotNet App
+  description: This is a small footprint DotNet application with GUI based on SignalRS and RabbitMQ Streams.  It is a pattern for moving data off edge to cloud or DC when connectivity is spotty.  It requires a local rabbitmq instance with Stream and Shovel plugins enabled.
+  iconUrl: https://images.freecreatives.com/wp-content/uploads/2015/05/smiley-559124_640.jpg
+  tags:
+  - dotnet
+  - rabbitmq
+  - edge
